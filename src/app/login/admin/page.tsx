@@ -106,12 +106,11 @@ function DashboardCard({
 async function DashboardCounts() {
   // Fetch in parallel → fastest possible
   const [hospitalsRes, doctorsRes, patientsRes, receiptsRes] = await Promise.all([
-    fetch('http://localhost:3000/api/Hospitals', { cache: 'no-store' }),     // or your production URL
-    fetch('http://localhost:3000/api/Doctors', { cache: 'no-store' }),
-    fetch('http://localhost:3000/api/Patients', { cache: 'no-store' }),
-    fetch('http://localhost:3000/api/Receipts', { cache: 'no-store' }),     // adjust endpoint name if needed
-  ]);
-
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/Hospitals`, { cache: "no-store" }),
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/Doctors`, { cache: "no-store" }),
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/Patients`, { cache: "no-store" }),
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/Receipts`, { cache: "no-store" }),
+]);
   // Handle responses (assuming JSON with { count: number } or array)
   const hospitals = await hospitalsRes.json();
   const doctors = await doctorsRes.json();
