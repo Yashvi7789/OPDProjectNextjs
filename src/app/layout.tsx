@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google"; // note: you had Geist instead of GeistSans
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,10 +23,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} dark`}
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`
+          bg-white          // fallback for light (if you ever remove .dark)
+          dark:bg-black     // ← this is the key line: makes page background black in dark mode
+          text-black dark:text-white   // better text contrast
+          min-h-screen antialiased
+        `}
       >
+        
         {children}
       </body>
     </html>
