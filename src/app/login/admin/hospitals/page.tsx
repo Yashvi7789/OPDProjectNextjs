@@ -14,6 +14,8 @@ type Hospital = {
   Address: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function HospitalsPage() {
 
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
@@ -37,7 +39,7 @@ export default function HospitalsPage() {
   const fetchHospitals = async () => {
     try {
 
-      const res = await fetch("/api/Hospitals");
+      const res = await fetch(`${BASE_URL}/api/Hospitals`);
       const data = await res.json();
 
       setHospitals(data);
@@ -80,8 +82,9 @@ export default function HospitalsPage() {
       const method = isEditing ? "PUT" : "POST";
 
       const url = isEditing
-        ? `/api/Hospitals/${editingId}`
-        : "/api/Hospitals";
+        ? `${BASE_URL}/api/Hospitals/${editingId}`
+        : `${BASE_URL}/api/Hospitals`;
+
 
       const res = await fetch(url, {
         method,
@@ -137,7 +140,7 @@ export default function HospitalsPage() {
 
     try {
 
-      const res = await fetch(`/api/Hospitals/${id}`, {
+      const res = await fetch(`${BASE_URL}/api/Hospitals/${id}`, {
         method: "DELETE"
       });
 

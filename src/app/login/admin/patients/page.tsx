@@ -24,6 +24,8 @@ type Patient = {
   EmergencyContactNo: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function PatientsPage() {
 
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -56,7 +58,7 @@ export default function PatientsPage() {
 
   const fetchPatients = async () => {
     try {
-      const res = await fetch("/api/Patients");
+      const res = await fetch(`${BASE_URL}/api/Patients`);
       const data = await res.json();
       setPatients(data);
     } catch (err) {
@@ -89,8 +91,8 @@ export default function PatientsPage() {
 
     const method = isEditing ? "PUT" : "POST";
     const url = isEditing
-      ? `/api/Patients/${editingId}`
-      : "/api/Patients";
+      ? `${BASE_URL}/api/Patients/${editingId}`
+    : `${BASE_URL}/api/Patients`;
 
     await fetch(url, {
       method,
@@ -123,7 +125,7 @@ export default function PatientsPage() {
 
     if (!confirm("Delete this patient?")) return;
 
-    await fetch(`/api/Patients/${id}`, {
+    await fetch(`${BASE_URL}/api/Patients/${id}`, {
       method: "DELETE",
     });
 

@@ -29,6 +29,8 @@ type OPD = {
   Description: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function OPDEntryPage() {
 
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -54,25 +56,25 @@ export default function OPDEntryPage() {
   const [form, setForm] = useState(initialForm);
 
   const fetchPatients = async () => {
-    const res = await fetch("/api/Patients");
+    const res = await fetch(`${BASE_URL}/api/Patients`);
     const data = await res.json();
     setPatients(data);
   };
 
   const fetchDiagnosisTypes = async () => {
-    const res = await fetch("/api/DiagnosisTypes");
+    const res = await fetch(`${BASE_URL}/api/DiagnosisTypes`);
     const data = await res.json();
     setDiagnosisTypes(data);
   };
 
   const fetchDoctors = async () => {
-    const res = await fetch("/api/Doctors");
+    const res = await fetch(`${BASE_URL}/api/Doctors`);
     const data = await res.json();
     setDoctors(data);
   };
 
   const fetchOPD = async () => {
-    const res = await fetch("/api/Opd");
+    const res = await fetch(`${BASE_URL}/api/Opd`);
     const data = await res.json();
     setOpdList(data);
   };
@@ -108,8 +110,8 @@ export default function OPDEntryPage() {
     const method = isEditing ? "PUT" : "POST";
 
     const url = isEditing
-      ? `/api/Opd/${editingId}`
-      : "/api/Opd";
+      ? `${BASE_URL}/api/Opd/${editingId}`
+      : `${BASE_URL}/api/Opd`;
 
     const opdRes = await fetch(url, {
       method,
@@ -133,7 +135,7 @@ export default function OPDEntryPage() {
 
     if (form.DiagnosisTypeID) {
 
-      await fetch("/api/OpdDiagnosisTypes", {
+      await fetch(`${BASE_URL}/api/OpdDiagnosisTypes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -176,7 +178,7 @@ export default function OPDEntryPage() {
 
     if (!confirm("Delete this OPD record?")) return;
 
-    await fetch(`/api/Opd/${id}`, {
+    await fetch(`${BASE_URL}/api/Opd/${id}`, {
       method: "DELETE"
     });
 

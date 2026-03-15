@@ -16,6 +16,8 @@ type SubTreatment = {
   Modified?: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL; 
+
 export default function SubTreatmentsPage() {
 
   const [subTreatments, setSubTreatments] = useState<SubTreatment[]>([]);
@@ -39,7 +41,7 @@ export default function SubTreatmentsPage() {
   // Fetch data
   const fetchSubTreatments = async () => {
     try {
-      const res = await fetch("/api/SubtreatmentTypes");
+      const res = await fetch(`${BASE_URL}/api/SubtreatmentTypes`);
       const data = await res.json();
       setSubTreatments(data);
     } catch (err) {
@@ -84,8 +86,8 @@ export default function SubTreatmentsPage() {
     const method = isEditing ? "PUT" : "POST";
 
     const url = isEditing
-      ? `/api/SubtreatmentTypes/${editingId}`
-      : "/api/SubtreatmentTypes";
+    ? `${BASE_URL}/api/SubtreatmentTypes/${editingId}`
+    : `${BASE_URL}/api/SubtreatmentTypes`;
 
     await fetch(url, {
       method,
@@ -118,7 +120,7 @@ export default function SubTreatmentsPage() {
 
     if (!confirm("Delete this sub treatment?")) return;
 
-    await fetch(`/api/SubtreatmentTypes/${id}`, {
+    await fetch(`${BASE_URL}/api/SubtreatmentTypes/${id}`, {
       method: "DELETE"
     });
 

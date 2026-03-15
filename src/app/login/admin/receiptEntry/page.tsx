@@ -229,14 +229,23 @@ PaymentModeID:1,
 Description:""
 });
 
-useEffect(()=>{
-fetchReceipts();
-fetch("/api/Opd").then(res=>res.json()).then(data=>setOpd(data));
-fetch("/api/SubtreatmentTypes").then(res=>res.json()).then(data=>setSubTreatments(data));
-},[]);
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const fetchReceipts=()=>{
-fetch("/api/Receipts").then(res=>res.json()).then(data=>setReceipts(data));
+useEffect(() => {
+  fetchReceipts();
+  fetch(`${BASE_URL}/api/Opd`)
+    .then(res => res.json())
+    .then(data => setOpd(data));
+
+  fetch(`${BASE_URL}/api/SubtreatmentTypes`)
+    .then(res => res.json())
+    .then(data => setSubTreatments(data));
+}, []);
+
+const fetchReceipts = () => {
+  fetch(`${BASE_URL}/api/Receipts`)
+    .then(res => res.json())
+    .then(data => setReceipts(data));
 };
 
 const handleChange=(e)=>{
@@ -278,7 +287,7 @@ e.preventDefault();
 
 if(editing){
 
-await fetch(`/api/Receipts/${form.ReceiptID}`,{
+await fetch(`${BASE_URL}/api/Receipts/${form.ReceiptID}`,{
 method:"PUT",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({...form,AmountPaid:total})
@@ -286,7 +295,7 @@ body:JSON.stringify({...form,AmountPaid:total})
 
 }else{
 
-const res=await fetch("/api/Receipts",{
+const res=await fetch(`${BASE_URL}/api/Receipts`,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({...form,OPDID:Number(form.OPDID),AmountPaid:total,UserID:1})
@@ -296,7 +305,7 @@ const data=await res.json();
 const receiptID=data.ReceiptID;
 
 for(const item of items){
-await fetch("/api/ReceiptTran",{
+await fetch(`${BASE_URL}/api/ReceiptTran`,{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
@@ -338,7 +347,7 @@ setShowForm(true);
 const handleDelete=async(id)=>{
 if(!confirm("Delete this receipt?")) return;
 
-await fetch(`/api/Receipts/${id}`,{method:"DELETE"});
+await fetch(`${BASE_URL}/api/Receipts/${id}`,{method:"DELETE"});
 fetchReceipts();
 };
 

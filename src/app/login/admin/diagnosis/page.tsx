@@ -20,6 +20,8 @@ type Hospital = {
   HospitalName: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
+
 export default function DiagnosisPage() {
 
   const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
@@ -43,7 +45,7 @@ export default function DiagnosisPage() {
   // Fetch Diagnosis
   const fetchDiagnosis = async () => {
 
-    const res = await fetch("/api/DiagnosisTypes");
+    const res = await fetch(`${BASE_URL}/api/DiagnosisTypes`);
     const data = await res.json();
 
     setDiagnosis(data);
@@ -54,7 +56,7 @@ export default function DiagnosisPage() {
   // Fetch Hospitals
   const fetchHospitals = async () => {
 
-    const res = await fetch("/api/Hospitals");
+    const res = await fetch(`${BASE_URL}/api/Hospitals`);
     const data = await res.json();
 
     setHospitals(data);
@@ -87,8 +89,8 @@ export default function DiagnosisPage() {
     const method = editing ? "PUT" : "POST";
 
     const url = editing
-      ? `/api/DiagnosisTypes/${form.DiagnosisTypeID}`
-      : "/api/DiagnosisTypes";
+      ?  `${BASE_URL}/api/DiagnosisTypes/${form.DiagnosisTypeID}`
+      : `${BASE_URL}/api/DiagnosisTypes`;
 
     await fetch(url, {
       method,
@@ -114,7 +116,7 @@ export default function DiagnosisPage() {
 
     if (!confirm("Delete this diagnosis?")) return;
 
-    await fetch(`/api/DiagnosisTypes/${id}`, {
+    await fetch(`${BASE_URL}/api/DiagnosisTypes/${id}`, {
       method: "DELETE",
     });
 

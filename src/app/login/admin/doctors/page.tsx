@@ -25,6 +25,10 @@ type Hospital = {
   HospitalName: string;
 };
 
+
+// Use environment variable
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function DoctorsPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
@@ -51,7 +55,7 @@ export default function DoctorsPage() {
 
   const fetchDoctors = async () => {
     try {
-      const res = await fetch("/api/Doctors");
+      const res = await fetch(`${BASE_URL}/api/Doctors`);
       const data = await res.json();
       setDoctors(data);
     } catch (err) {
@@ -63,7 +67,7 @@ export default function DoctorsPage() {
 
   const fetchHospitals = async () => {
     try {
-      const res = await fetch("/api/Hospitals");
+      const res = await fetch(`${BASE_URL}/api/Hospitals`);
       const data = await res.json();
       setHospitals(data);
     } catch (err) {
@@ -75,7 +79,7 @@ export default function DoctorsPage() {
     if (!confirm("Really remove this doctor?")) return;
 
     try {
-      const res = await fetch(`/api/Doctors/${id}`, { method: "DELETE" });
+      const res = await fetch(`${BASE_URL}/api/Doctors/${id}`, { method: "DELETE" });
 
       if (!res.ok) throw new Error("Delete failed");
 
@@ -89,7 +93,7 @@ export default function DoctorsPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/Doctors", {
+      const res = await fetch(`${BASE_URL}/api/Doctors`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -408,3 +412,8 @@ export default function DoctorsPage() {
     </div>
   );
 }
+
+
+
+
+

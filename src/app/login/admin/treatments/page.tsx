@@ -14,6 +14,8 @@ type Treatment = {
   Modified: string;
 };
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:3000";
+
 export default function TreatmentsPage() {
 
   const [treatments, setTreatments] = useState<Treatment[]>([]);
@@ -37,7 +39,7 @@ export default function TreatmentsPage() {
   // Fetch treatments
   const fetchTreatments = async () => {
     try {
-      const res = await fetch("/api/TreatmentTypes");
+      const res = await fetch(`${API_BASE}/api/TreatmentTypes`);
       const data = await res.json();
       setTreatments(data);
     } catch (err) {
@@ -73,8 +75,8 @@ export default function TreatmentsPage() {
     const method = isEditing ? "PUT" : "POST";
 
     const url = isEditing
-      ? `/api/TreatmentTypes/${editingId}`
-      : "/api/TreatmentTypes";
+  ? `${API_BASE}/api/TreatmentTypes/${editingId}`
+  : `${API_BASE}/api/TreatmentTypes`;
 
     await fetch(url, {
       method,
@@ -100,7 +102,7 @@ export default function TreatmentsPage() {
 
     if (!confirm("Delete this treatment?")) return;
 
-    await fetch(`/api/TreatmentTypes/${id}`, {
+    await fetch(`${API_BASE}/api/TreatmentTypes/${id}`, {
       method: "DELETE",
     });
 

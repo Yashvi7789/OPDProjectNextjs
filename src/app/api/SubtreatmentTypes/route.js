@@ -20,6 +20,7 @@ export async function GET() {
   }
 }
 
+
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -34,7 +35,7 @@ export async function POST(request) {
       AccountID
     } = body;
 
-    if (!SubTreatmentTypeName || !TreatmentTypeID || !Rate || !UserID) {
+    if (!SubTreatmentTypeName || TreatmentTypeID == null || Rate == null || UserID == null) {
       return NextResponse.json(
         { message: "Required fields missing" },
         { status: 400 }
@@ -43,15 +44,15 @@ export async function POST(request) {
 
     const [result] = await pool.query(
       `INSERT INTO subtreatment_types
-      (SubTreatmentTypeName, TreatmentTypeID, Rate, IsActive, Description, UserID, AccountID)
-      VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       (SubTreatmentTypeName, TreatmentTypeID, Rate, IsActive, Description, UserID, AccountID)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         SubTreatmentTypeName,
-        TreatmentTypeID,
-        Rate,
+        Number(TreatmentTypeID),
+        Number(Rate),
         IsActive ?? 1,
         Description || null,
-        UserID,
+        Number(UserID),
         AccountID || null
       ]
     );
@@ -68,4 +69,3 @@ export async function POST(request) {
     );
   }
 }
-
